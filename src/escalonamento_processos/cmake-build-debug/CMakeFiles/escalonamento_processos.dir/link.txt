@@ -1,0 +1,3 @@
+C:\Users\kid-a\AppData\Local\JetBrains\Toolbox\apps\CLion\ch-0\211.7142.21\bin\cmake\win\bin\cmake.exe -E rm -f CMakeFiles\escalonamento_processos.dir/objects.a
+C:\MinGW\bin\ar.exe cr CMakeFiles\escalonamento_processos.dir/objects.a @CMakeFiles\escalonamento_processos.dir\objects1.rsp
+C:\MinGW\bin\gcc.exe -g -Wl,--whole-archive CMakeFiles\escalonamento_processos.dir/objects.a -Wl,--no-whole-archive -o escalonamento_processos.exe -Wl,--out-implib,libescalonamento_processos.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\escalonamento_processos.dir\linklibs.rsp
