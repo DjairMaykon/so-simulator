@@ -1,5 +1,21 @@
 import { tempoDeChegadaMinimo, vazio } from "./processo.js"
 
+function ordenaProntos(a, b) {
+    if (a.tc < b.tc)
+        return -1;
+    if (a.tc > b.tc)
+        return 1;
+    if (a.p < b.p)
+        return -1;
+    if (a.p > b.p)
+        return 1;
+    if (a.id < b.id)
+        return -1;
+    if (a.id > b.id)
+        return 1;
+    return 0;
+}
+
 export function fifo(processos){
     let n = processos.length
     let processosProntos = []
@@ -13,14 +29,15 @@ export function fifo(processos){
         retorno += processos[i].te
     }
 
+    processosProntos.sort(ordenaProntos);
     let escalonado = []
 
-    console.log(`prontos[ ] vazio:\t${vazio(processosProntos)}`)
-    console.log(`inseridos prontos[1]:\t${processosProntos[1].id} ${processosProntos[1].tc} ${processosProntos[1].te} ${processosProntos[1].d} ${processosProntos[1].p}\n`)
+    // console.log(`prontos[ ] vazio:\t${vazio(processosProntos)}`)
+    // console.log(`inseridos prontos[1]:\t${processosProntos[1].id} ${processosProntos[1].tc} ${processosProntos[1].te} ${processosProntos[1].d} ${processosProntos[1].p}\n`)
 
     while (it != processos.length){
         let aux = processosProntos[it]
-        console.log(`index: ${index}\n`)
+        // console.log(`index: ${index}\n`)
         for(let i = index; i < index + aux.te; i++){
             escalonado[i] = aux;
             index_aux++;
