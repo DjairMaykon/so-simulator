@@ -1,6 +1,7 @@
 import { fifo } from "./fifo.js"
 import { sjf } from "./sjf.js"
 import { rr } from "./rr.js"
+import { edf } from "./edf.js"
 
 console.log("Inicio do programa:")
 
@@ -75,3 +76,5 @@ console.log(escalonadoRR);
 //         console.log(`[${i}]:\t${escalonadoRR[i].id} ${escalonadoRR[i].tc} ${escalonadoRR[i].te} ${escalonadoRR[i].ter} ${escalonadoRR[i].d} ${escalonadoRR[i].p}`);
 //     }
 // }
+
+let escalonadoEDF = edf(listaProcessos, 2, 1);
