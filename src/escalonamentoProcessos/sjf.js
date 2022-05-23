@@ -53,7 +53,10 @@ export function sjf(processos) {
 }
 
 function preparaListaProntos(processos, processosProntos){
-    let p = processos;
+    let p = [];
+    for(let i = 0; i < processos.length; i++){
+        p[i] = processos[i];
+    }
     let sumRetorno = 0, menor = 0;
     p.sort(ordenaProntos);
     processosProntos.push(p.shift());

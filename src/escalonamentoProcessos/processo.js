@@ -1,7 +1,7 @@
 
 export function tempoDeChegadaMinimo(processos){
     let n = processos.length
-    let min = Math.max()
+    let min = 8000
     let aux;
 
     for(let i = 0; i < n; i++){
