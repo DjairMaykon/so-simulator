@@ -24,7 +24,7 @@ let listaProcessos = [
         id: 0,
         tc: 0,
         te: 4,
-        ter: 4,
+        ter: 4, //tempo de execucao restante
         d: 7,
         p: 0
     },

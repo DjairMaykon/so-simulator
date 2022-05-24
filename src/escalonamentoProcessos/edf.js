@@ -27,6 +27,7 @@ export function edf(processos, quantum) {
     let it = 0
     let index = 0
     let index_aux = 0
+    let count = 0
 
     // for(let i = 0; i < n; i++){
     //     processosProntos[i] = processos[i]
@@ -43,13 +44,15 @@ export function edf(processos, quantum) {
         // console.log(`index: ${index}\n`)
         for(let i = index; i < index + aux.te; i++){
             escalonado.push(aux);
-            aux.ter -= 1;
-            if(((aux.ter) % quantum == 0) && aux.ter >= quantum){
+            count ++;
+            if(((count) == quantum) && aux.ter >= quantum){
                 escalonado.push('sobrecarga');
+                count = 0;
             }
-            
+            aux.ter -= 1;
             index_aux++;
         }
+        count = 0;
         index = index_aux;
         it++;
     }
