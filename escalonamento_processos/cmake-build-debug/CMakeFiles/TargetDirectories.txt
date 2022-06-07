@@ -1,3 +1,0 @@
-C:/Users/kid-a/CLionProjects/escalonamento_processos/cmake-build-debug/CMakeFiles/escalonamento_processos.dir
-C:/Users/kid-a/CLionProjects/escalonamento_processos/cmake-build-debug/CMakeFiles/edit_cache.dir
-C:/Users/kid-a/CLionProjects/escalonamento_processos/cmake-build-debug/CMakeFiles/rebuild_cache.dir
