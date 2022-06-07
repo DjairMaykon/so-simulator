@@ -54,9 +54,11 @@ export function App() {
   }
 
   function escalonator() {
+    // Diz qual processo deve rodar agora
     if (processQueue.length == 0) return;
     setProcessRunning([...processRunning, processQueue[0]]);
 
+    // Tira o processo que já executou
     processList[processQueue[0]].executedTimes++;
     if (
       processList[processQueue[0]].executedTimes ==
@@ -68,10 +70,13 @@ export function App() {
   useEffect(() => {
     if (timer < 20) {
       let interval = setInterval(async () => {
+        // Adiciono na fila o processo
         const result = processList
           .filter((p) => p.entryTime == timer)
           .map((p) => p.id);
         processQueue.push(...result);
+
+        // chamo o escalonador
         escalonator();
 
         setTimer(timer + 1);
