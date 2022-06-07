@@ -1,0 +1,9 @@
+table tr {
+  @apply flex gap-0;
+}
+table td {
+  @apply border-[1px] border-stone-900 w-[30px] h-[30px] bg-transparent;
+}
+table td.process-info {
+  @apply text-center;
+}
