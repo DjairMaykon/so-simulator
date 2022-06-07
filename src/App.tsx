@@ -38,6 +38,8 @@ export function App() {
       executedTimes: 0,
     },
   ]);
+  const [escalonator, setEscalonator] = useState<string>("fifo");
+  const [runCpu, setRunCpu] = useState<boolean>(false);
   const [processQueue, setProcessQueue] = useState<number[]>([]);
   const [timer, setTimer] = useState<number>(0);
   const [processRunning, setProcessRunning] = useState<number[]>([]);
@@ -53,7 +55,16 @@ export function App() {
     return "";
   }
 
-  function escalonator() {
+  function escalonar() {
+    if (escalonator == "sjf")
+      processQueue.sort(
+        (a, b) =>
+          (processList.find((p) => p.id == a)?.executionTime ?? 0) -
+          (processList.find((p) => p.id == a)?.executedTimes ?? 0) -
+          (processList.find((p) => p.id == b)?.executionTime ?? 0) -
+          (processList.find((p) => p.id == b)?.executedTimes ?? 0)
+      );
+
     // Diz qual processo deve rodar agora
     if (processQueue.length == 0) return;
     setProcessRunning([...processRunning, processQueue[0]]);
@@ -68,7 +79,7 @@ export function App() {
   }
 
   useEffect(() => {
-    if (timer < 20) {
+    if (runCpu) {
       let interval = setInterval(async () => {
         // Adiciono na fila o processo
         const result = processList
@@ -77,7 +88,7 @@ export function App() {
         processQueue.push(...result);
 
         // chamo o escalonador
-        escalonator();
+        escalonar();
 
         setTimer(timer + 1);
       }, 1000 * quantum);
@@ -86,6 +97,26 @@ export function App() {
   });
   return (
     <>
+      <div>
+        <label>
+          Fifo
+          <input
+            type="checkbox"
+            checked={escalonator == "fifo"}
+            onChange={(e) => e.target.checked && setEscalonator("fifo")}
+          />
+        </label>
+        <label>
+          SJF
+          <input
+            type="checkbox"
+            checked={escalonator == "sjf"}
+            onChange={(e) => e.target.checked && setEscalonator("sjf")}
+          />
+        </label>
+        <button onClick={() => setRunCpu(!runCpu)}>Run</button>
+      </div>
+      <hr />
       <div>
         <h1>Timer: {timer > 0 && timer - 1}</h1>
       </div>
@@ -116,7 +147,7 @@ export function App() {
                 <td className="process-info">{process.deadline}</td>
                 {processRunning.map((processInTime, index) => (
                   <td
-                    key={index}
+                    key={`${i}-${index}`}
                     className={`${processExecutionColor(
                       process,
                       processInTime
