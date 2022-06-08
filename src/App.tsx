@@ -310,7 +310,7 @@ export function App() {
           className="px-2 bg-green-400 rounded border border-green-500"
           onClick={() => setRunCpu(!runCpu)}
         >
-          Run
+          {!runCpu ? "Play" : "Pause"}
         </button>
         <button
           className="px-2 bg-red-400 rounded border border-red-500"
