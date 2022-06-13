@@ -50,6 +50,7 @@ export function App() {
     <>
       <div className="flex gap-5 p-2">
         <button
+          disabled={processList.length == 0}
           className="px-2 bg-green-400 rounded border border-green-500"
           onClick={() => setRunCpu(!runCpu)}
         >
