@@ -6,55 +6,18 @@ import { useCpu } from "./hooks/useCpu";
 
 export function App() {
   const [processNumber, setProcessNumber] = useState<number>(1);
-  const [processList, setProcessList] = useState<Process[]>([
-    {
-      id: 0,
-      entryTime: 0,
-      executionTime: 4,
-      deadline: 7,
-      priority: 0,
-      executedTimes: 0,
-    },
-    {
-      id: 1,
-      entryTime: 2,
-      executionTime: 2,
-      deadline: 5,
-      priority: 1,
-      executedTimes: 0,
-    },
-    {
-      id: 2,
-      entryTime: 4,
-      executionTime: 1,
-      deadline: 8,
-      priority: 2,
-      executedTimes: 0,
-    },
-    {
-      id: 3,
-      entryTime: 6,
-      executionTime: 3,
-      deadline: 10,
-      priority: 3,
-      executedTimes: 0,
-    },
-  ]);
   const [escalonator, setEscalonator] = useState<string>("fifo");
   const [quantum, setQuantum] = useState<number>(1);
   const [sobrecarga, setSobrecarga] = useState<number>(1);
-  const [processQueue, timer, processRunning, clearCpu, runCpu, setRunCpu] =
-    useCpu(escalonator, quantum, sobrecarga, processList, executeProcess);
-
-  function executeProcess(processId: number) {
-    setProcessList(
-      processList.map((p) =>
-        p.id === processId
-          ? Object.assign(p, { executedTimes: p.executedTimes + 1 })
-          : p
-      )
-    );
-  }
+  const [
+    processQueue,
+    timer,
+    processRunning,
+    processList,
+    clearCpu,
+    runCpu,
+    setRunCpu,
+  ] = useCpu(escalonator, quantum, sobrecarga);
 
   function processExecutionColor(
     process: Process,
@@ -63,6 +26,13 @@ export function App() {
     if (process.id != processRunning[indexProcessInTime].process) return "";
     if (processRunning[indexProcessInTime].sobrecarga > 0) {
       return "bg-red-800";
+    }
+    if (
+      escalonator == "edf" &&
+      processRunning[indexProcessInTime].time >=
+        process.entryTime + process.deadline
+    ) {
+      return "bg-gray-800";
     }
     return "bg-green-800";
   }
@@ -157,42 +127,6 @@ export function App() {
             ))}
         </tbody>
       </table>
-      <div className="flex flex-col">
-        <input
-          type="number"
-          value={processNumber}
-          onChange={(e) =>
-            e.target.value &&
-            !isNaN(parseInt(e.target.value)) &&
-            parseInt(e.target.value) > 0 &&
-            setProcessNumber(parseInt(e.target.value))
-          }
-        />
-        {processNumber &&
-          [...Array(processNumber)].map(() => (
-            <div>
-              <label>
-                TC
-                <input type="text" />
-              </label>
-
-              <label>
-                TC
-                <input type="text" />
-              </label>
-
-              <label>
-                TC
-                <input type="text" />
-              </label>
-
-              <label>
-                TC
-                <input type="text" />
-              </label>
-            </div>
-          ))}
-      </div>
     </>
   );
 }
