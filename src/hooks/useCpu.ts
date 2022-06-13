@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { mergeSort } from "../utils/funcoes";
-import { EscalonadorProcessos } from "../utils/interfaces";
 import { Process } from "../utils/types";
 
 export function useCpu(
@@ -15,48 +14,38 @@ export function useCpu(
   processList: Process[],
   clearCpu: () => void,
   runCpu: boolean,
-  setRunCpu: (run: boolean) => void
+  setRunCpu: (run: boolean) => void,
+  editaProcesso: (processId: number, objectValue: any) => void,
+  adicionaProcesso: () => void
 ] {
   const [runCpu, setRunCpu] = useState<boolean>(false);
   const [timer, setTimer] = useState<number>(0);
-  const [processList, setProcessList] = useState<Process[]>([
-    {
-      id: 0,
-      entryTime: 0,
-      executionTime: 4,
-      deadline: 7,
-      priority: 0,
-      executedTimes: 0,
-    },
-    {
-      id: 1,
-      entryTime: 2,
-      executionTime: 2,
-      deadline: 5,
-      priority: 1,
-      executedTimes: 0,
-    },
-    {
-      id: 2,
-      entryTime: 4,
-      executionTime: 1,
-      deadline: 8,
-      priority: 2,
-      executedTimes: 0,
-    },
-    {
-      id: 3,
-      entryTime: 6,
-      executionTime: 3,
-      deadline: 10,
-      priority: 3,
-      executedTimes: 0,
-    },
-  ]);
+  const [processList, setProcessList] = useState<Process[]>([]);
   let [processQueue, setProcessQueue] = useState<number[]>([]);
   const [processRunning, setProcessRunning] = useState<
     { process: number; sobrecarga: number; time: number }[]
   >([]);
+
+  function adicionaProcesso() {
+    setProcessList([
+      ...processList,
+      {
+        id: processList.length,
+        entryTime: 0,
+        deadline: 0,
+        executionTime: 0,
+        executedTimes: 0,
+        priority: 0,
+      },
+    ]);
+  }
+  function editaProcesso(processId: number, objectValue: any) {
+    setProcessList(
+      processList.map((p) =>
+        p.id == processId ? Object.assign(p, objectValue) : p
+      )
+    );
+  }
 
   function executaProcessoAtualDaLista(sobrecarga: number = 0) {
     // const sobrecarga = isSobrecarga ? processRunning[processRunning.length - 1].sobrecarga + 1 : 0
@@ -179,9 +168,13 @@ export function useCpu(
   }
 
   function clearCpu() {
+    setRunCpu(false);
     setProcessQueue([]);
     setTimer(0);
     setProcessRunning([]);
+    setProcessList(
+      processList.map((p) => Object.assign(p, { executedTimes: 0 }))
+    );
   }
 
   useEffect(() => {
@@ -213,5 +206,7 @@ export function useCpu(
     clearCpu,
     runCpu,
     setRunCpu,
+    editaProcesso,
+    adicionaProcesso,
   ];
 }

@@ -2,8 +2,16 @@ table tr {
   @apply flex gap-0;
 }
 table td {
-  @apply border-y-[1px] border-stone-900 w-[30px] h-[30px] bg-transparent;
+  @apply border-y-[1px] border-x-[0.25px] border-stone-900 w-[30px] h-[30px] bg-transparent;
 }
 table td.process-info {
-  @apply border-[1px] text-center;
+  @apply border-[1px] text-center w-[40px];
+}
+input[type="number"] {
+  @apply appearance-none;
+  -moz-appearance: textfield;
+}
+input[type="number"]:disabled,
+button:disabled {
+  @apply opacity-50;
 }
