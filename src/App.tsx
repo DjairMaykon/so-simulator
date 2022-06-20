@@ -152,6 +152,17 @@ export function App() {
               <h2 key={i}>{p}</h2>
             ))}
           </div>
+          <div className="flex gap-1 p-2">
+            <h1>Turnaround Medio:</h1>
+            {processList.reduce((prev, next) => {
+              const execucoesProcesso = processRunning.filter(
+                (p) => p.process == next.id
+              );
+              if (execucoesProcesso.length < 1) return 0;
+              const exitTime = execucoesProcesso.slice(-1)[0].time;
+              return prev + (exitTime - next.entryTime);
+            }, 0) / processList.length}
+          </div>
         </div>
         <div>
           <h1>Memoria Ram</h1>
@@ -264,6 +275,17 @@ export function App() {
                   ))}
                 </tr>
               ))}
+            <tr>
+              <td className="process-info time"></td>
+              <td className="process-info time"></td>
+              <td className="process-info time"></td>
+              <td className="process-info time"></td>
+              <td className="process-info time"></td>
+              <td className="process-info time"></td>
+              {[...Array(timer)].map((n, t) => (
+                <td key={`time-${t}`}>{t}</td>
+              ))}
+            </tr>
           </tbody>
         </table>
       </div>
