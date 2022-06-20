@@ -3,7 +3,6 @@ import { mergeSort } from "../utils/funcoes";
 import { Process } from "../utils/types";
 
 export function useCpu(
-  // escalonador: EscalonadorProcessos,
   escalonator: string,
   quantumSitema: number,
   sobrecargaSistema: number
@@ -37,6 +36,7 @@ export function useCpu(
     setProcessList(
       processList.map((p) => Object.assign(p, { executedTimes: 0 }))
     );
+    setRam(Array(50).fill(-1));
   }
   function adicionaProcesso() {
     setProcessList([
