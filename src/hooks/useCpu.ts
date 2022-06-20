@@ -26,6 +26,15 @@ export function useCpu(
     { process: number; sobrecarga: number; time: number }[]
   >([]);
 
+  function clearCpu() {
+    setRunCpu(false);
+    setProcessQueue([]);
+    setTimer(0);
+    setProcessRunning([]);
+    setProcessList(
+      processList.map((p) => Object.assign(p, { executedTimes: 0 }))
+    );
+  }
   function adicionaProcesso() {
     setProcessList([
       ...processList,
@@ -48,7 +57,6 @@ export function useCpu(
   }
 
   function executaProcessoAtualDaLista(sobrecarga: number = 0) {
-    // const sobrecarga = isSobrecarga ? processRunning[processRunning.length - 1].sobrecarga + 1 : 0
     // Diz qual processo deve rodar agora
     setProcessRunning([
       ...processRunning,
@@ -88,6 +96,7 @@ export function useCpu(
         );
       }) as number[]) ?? processQueue;
     setProcessQueue(processQueue);
+
     executaProcessoAtualDaLista();
   }
   function rr() {
@@ -119,6 +128,18 @@ export function useCpu(
       executaProcessoAtualDaLista();
     }
   }
+  function ordenaFilaPorDeadline() {
+    processQueue =
+      (mergeSort(processQueue, (a, b) => {
+        return (
+          (processList.find((p) => p.id == a)?.entryTime ?? 0) +
+          (processList.find((p) => p.id == a)?.deadline ?? 0) -
+          ((processList.find((p) => p.id == b)?.entryTime ?? 0) +
+            (processList.find((p) => p.id == b)?.deadline ?? 0))
+        );
+      }) as number[]) ?? processQueue;
+    setProcessQueue(processQueue);
+  }
   function edf() {
     //ver qual processo que executou, caso o anterior
     if (processRunning.length >= quantumSitema) {
@@ -131,17 +152,7 @@ export function useCpu(
             processRunning[processRunning.length - 1].sobrecarga + 1
           );
         } else {
-          const newQueue =
-            (mergeSort(processQueue, (a, b) => {
-              return (
-                (processList.find((p) => p.id == a)?.entryTime ?? 0) +
-                (processList.find((p) => p.id == a)?.deadline ?? 0) -
-                ((processList.find((p) => p.id == b)?.entryTime ?? 0) +
-                  (processList.find((p) => p.id == b)?.deadline ?? 0))
-              );
-            }) as number[]) ?? processQueue;
-          processQueue = newQueue;
-          setProcessQueue(processQueue);
+          ordenaFilaPorDeadline();
           executaProcessoAtualDaLista();
         }
       } else if (
@@ -154,27 +165,24 @@ export function useCpu(
         executaProcessoAtualDaLista();
       }
     } else {
+      ordenaFilaPorDeadline();
       executaProcessoAtualDaLista();
     }
   }
 
-  function escalonar() {
-    if (processQueue.length == 0) return;
+  function escalonarProcessos() {
+    if (processQueue.length == 0) {
+      setProcessRunning([
+        ...processRunning,
+        { process: NaN, sobrecarga: 0, time: timer },
+      ]);
+      return;
+    }
 
     if (escalonator == "fifo") fifo();
     if (escalonator == "sjf") sjf();
     if (escalonator == "rr") rr();
     if (escalonator == "edf") edf();
-  }
-
-  function clearCpu() {
-    setRunCpu(false);
-    setProcessQueue([]);
-    setTimer(0);
-    setProcessRunning([]);
-    setProcessList(
-      processList.map((p) => Object.assign(p, { executedTimes: 0 }))
-    );
   }
 
   useEffect(() => {
@@ -191,7 +199,7 @@ export function useCpu(
         setProcessQueue(processQueue);
 
         // chamo o escalonador
-        escalonar();
+        escalonarProcessos();
 
         setTimer(timerAtual + 1);
       }, 1000);

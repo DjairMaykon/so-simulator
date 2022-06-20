@@ -6,7 +6,7 @@ import { useCpu } from "./hooks/useCpu";
 
 export function App() {
   const [processNumber, setProcessNumber] = useState<number>(1);
-  const [escalonator, setEscalonator] = useState<string>("fifo");
+  const [escalonatorProcess, setEscalonatorProcess] = useState<string>("fifo");
   const [quantum, setQuantum] = useState<number>(1);
   const [sobrecarga, setSobrecarga] = useState<number>(1);
   const [
@@ -19,7 +19,7 @@ export function App() {
     setRunCpu,
     editaProcesso,
     adicionaProcesso,
-  ] = useCpu(escalonator, quantum, sobrecarga);
+  ] = useCpu(escalonatorProcess, quantum, sobrecarga);
 
   function processExecutionColor(
     process: Process,
@@ -30,7 +30,7 @@ export function App() {
       return "bg-red-800";
     }
     if (
-      escalonator == "edf" &&
+      escalonatorProcess == "edf" &&
       processRunning[indexProcessInTime].time >=
         process.entryTime + process.deadline
     ) {
@@ -96,8 +96,8 @@ export function App() {
           <input
             disabled={runCpu}
             type="checkbox"
-            checked={escalonator == "fifo"}
-            onChange={(e) => e.target.checked && setEscalonator("fifo")}
+            checked={escalonatorProcess == "fifo"}
+            onChange={(e) => e.target.checked && setEscalonatorProcess("fifo")}
           />
         </label>
         <label className="flex gap-0.5">
@@ -105,8 +105,8 @@ export function App() {
           <input
             disabled={runCpu}
             type="checkbox"
-            checked={escalonator == "sjf"}
-            onChange={(e) => e.target.checked && setEscalonator("sjf")}
+            checked={escalonatorProcess == "sjf"}
+            onChange={(e) => e.target.checked && setEscalonatorProcess("sjf")}
           />
         </label>
         <label className="flex gap-0.5">
@@ -114,8 +114,8 @@ export function App() {
           <input
             disabled={runCpu}
             type="checkbox"
-            checked={escalonator == "rr"}
-            onChange={(e) => e.target.checked && setEscalonator("rr")}
+            checked={escalonatorProcess == "rr"}
+            onChange={(e) => e.target.checked && setEscalonatorProcess("rr")}
           />
         </label>
         <label className="flex gap-0.5">
@@ -123,8 +123,8 @@ export function App() {
           <input
             disabled={runCpu}
             type="checkbox"
-            checked={escalonator == "edf"}
-            onChange={(e) => e.target.checked && setEscalonator("edf")}
+            checked={escalonatorProcess == "edf"}
+            onChange={(e) => e.target.checked && setEscalonatorProcess("edf")}
           />
         </label>
       </div>
