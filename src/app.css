@@ -2,13 +2,16 @@ table.table-process tr {
   @apply flex gap-0;
 }
 table.table-process td {
-  @apply border-y-[1px] border-x-[0.25px] border-stone-900 w-[30px] h-[30px];
+  @apply border-y-[0] border-x-[0.5px] border-stone-900 w-[30px] h-[30px];
 }
 table.table-process td.process-info {
   @apply border-[1px] text-center w-[40px];
 }
-table.table-process td.process-info.time {
-  @apply border-x-0;
+table.table-process tr.time td:not(.process-info) {
+  @apply border-y-[1px] border-x-[0] text-center;
+}
+table.table-process tr.time td.process-info {
+  @apply border-x-0 w-[240px];
 }
 table.table-process td.process-info img {
   height: 25px;

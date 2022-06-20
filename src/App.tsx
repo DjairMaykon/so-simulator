@@ -159,7 +159,16 @@ export function App() {
                 (p) => p.process == next.id
               );
               if (execucoesProcesso.length < 1) return 0;
-              const exitTime = execucoesProcesso.slice(-1)[0].time;
+              const exitTime = execucoesProcesso.slice(-1)[0].time + 1;
+              return prev + (exitTime - next.entryTime);
+            }, 0)}
+            /{processList.length} =
+            {processList.reduce((prev, next) => {
+              const execucoesProcesso = processRunning.filter(
+                (p) => p.process == next.id
+              );
+              if (execucoesProcesso.length < 1) return 0;
+              const exitTime = execucoesProcesso.slice(-1)[0].time + 1;
               return prev + (exitTime - next.entryTime);
             }, 0) / processList.length}
           </div>
@@ -275,13 +284,8 @@ export function App() {
                   ))}
                 </tr>
               ))}
-            <tr>
-              <td className="process-info time"></td>
-              <td className="process-info time"></td>
-              <td className="process-info time"></td>
-              <td className="process-info time"></td>
-              <td className="process-info time"></td>
-              <td className="process-info time"></td>
+            <tr className="time">
+              <td className="process-info">Tempo</td>
               {[...Array(timer)].map((n, t) => (
                 <td key={`time-${t}`}>{t}</td>
               ))}
