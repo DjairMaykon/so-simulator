@@ -42,7 +42,7 @@ export function useCpu(
     setProcessList([
       ...processList,
       {
-        id: processList.length,
+        id: processList.length == 0 ? 0 : processList.slice(-1)[0].id + 1,
         entryTime: 0,
         deadline: 0,
         executionTime: 0,
