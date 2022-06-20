@@ -201,7 +201,9 @@ export function useCpu(
     const processAtual = processList.find((p) => p.id === processQueue[0]);
     if (
       processAtual &&
-      ram.filter((x) => x == -1).length > processAtual.pagesQuantity
+      ram.filter((x) => x == -1).length > processAtual.pagesQuantity &&
+      ram.filter((x) => x == processAtual.id).length <
+        processAtual.pagesQuantity
     ) {
       let pagesNeeded = processAtual.pagesQuantity;
       ram = ram.map((pInRam, i) => {
