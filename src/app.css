@@ -1,10 +1,10 @@
-table tr {
+table.table-process tr {
   @apply flex gap-0;
 }
-table td {
-  @apply border-y-[1px] border-x-[0.25px] border-stone-900 w-[30px] h-[30px] bg-transparent;
+table.table-process td {
+  @apply border-y-[1px] border-x-[0.25px] border-stone-900 w-[30px] h-[30px];
 }
-table td.process-info {
+table.table-process td.process-info {
   @apply border-[1px] text-center w-[40px];
 }
 input[type="number"] {
@@ -14,4 +14,11 @@ input[type="number"] {
 input[type="number"]:disabled,
 button:disabled {
   @apply opacity-50;
+}
+
+table.table-ram {
+  @apply flex-1 border-2;
+}
+table.table-ram td {
+  @apply w-[120px] border-2;
 }

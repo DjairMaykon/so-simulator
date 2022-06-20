@@ -16,7 +16,8 @@ export function useCpu(
   runCpu: boolean,
   setRunCpu: (run: boolean) => void,
   editaProcesso: (processId: number, objectValue: any) => void,
-  adicionaProcesso: () => void
+  adicionaProcesso: () => void,
+  ram: number[]
 ] {
   const [runCpu, setRunCpu] = useState<boolean>(false);
   const [timer, setTimer] = useState<number>(0);
@@ -25,6 +26,7 @@ export function useCpu(
   const [processRunning, setProcessRunning] = useState<
     { process: number; sobrecarga: number; time: number }[]
   >([]);
+  let [ram, setRam] = useState<number[]>(Array(50).fill(-1));
 
   function clearCpu() {
     setRunCpu(false);
@@ -45,6 +47,8 @@ export function useCpu(
         executionTime: 0,
         executedTimes: 0,
         priority: 0,
+        pagesQuantity: 0,
+        pages: [],
       },
     ]);
   }
@@ -185,6 +189,38 @@ export function useCpu(
     if (escalonator == "edf") edf();
   }
 
+  function fifoMemo() {}
+  function lRU() {}
+  function escalonarMemoria() {
+    if (processQueue.length == 0) return;
+
+    const processAtual = processList.find((p) => p.id === processQueue[0]);
+    if (
+      processAtual &&
+      ram.filter((x) => x == -1).length > processAtual.pagesQuantity
+    ) {
+      let pagesNeeded = processAtual.pagesQuantity;
+      ram = ram.map((pInRam, i) => {
+        if (pInRam == -1 && pagesNeeded > 0) {
+          pagesNeeded -= 1;
+          editaProcesso(processAtual.id, {
+            pages: [
+              ...processAtual.pages,
+              {
+                index: i,
+                ram: true,
+              },
+            ],
+          });
+          return processAtual.id;
+        } else {
+          return pInRam;
+        }
+      });
+      setRam(ram);
+    }
+  }
+
   useEffect(() => {
     if (runCpu) {
       let interval = setInterval(async () => {
@@ -198,8 +234,11 @@ export function useCpu(
         processQueue.push(...result);
         setProcessQueue(processQueue);
 
-        // chamo o escalonador
+        // chamo o escalonador de processos
         escalonarProcessos();
+
+        // chamo o escalonador de memoria
+        escalonarMemoria();
 
         setTimer(timerAtual + 1);
       }, 1000);
@@ -216,5 +255,6 @@ export function useCpu(
     setRunCpu,
     editaProcesso,
     adicionaProcesso,
+    ram,
   ];
 }

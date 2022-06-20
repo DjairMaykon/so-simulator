@@ -5,8 +5,11 @@ export type Process = {
   executionTime: number;
   priority: number;
   executedTimes: number;
-  paginas?: {
-    index: number;
-    ram: boolean;
-  }[];
+  pagesQuantity: number;
+  pages: ProcessPage[];
+};
+
+export type ProcessPage = {
+  index: number;
+  ram: boolean;
 };
