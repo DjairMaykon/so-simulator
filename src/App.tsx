@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Process } from "./utils/types";
+import Trash from "./assets/trash.svg";
 
 import "./app.css";
 import { useCpu } from "./hooks/useCpu";
@@ -17,6 +18,7 @@ export function App() {
     clearCpu,
     runCpu,
     setRunCpu,
+    deletaProcesso,
     editaProcesso,
     adicionaProcesso,
     ram,
@@ -174,6 +176,7 @@ export function App() {
         <table className="table-process flex flex-col gap-0">
           <thead>
             <tr>
+              <td className="process-info"></td>
               <td className="process-info">Nº</td>
               <td className="process-info">TC</td>
               <td className="process-info">TE</td>
@@ -186,9 +189,17 @@ export function App() {
               .sort((a, b) => a.id - b.id)
               .map((process, i) => (
                 <tr key={i}>
+                  <td
+                    style={{ cursor: runCpu ? "initial" : "pointer" }}
+                    onClick={() => !runCpu && deletaProcesso(process.id)}
+                    className="process-info"
+                  >
+                    <img src={Trash} alt="" />
+                  </td>
                   <td className="process-info">{process.id}</td>
                   <td className="process-info">
                     <input
+                      disabled={runCpu}
                       type="number"
                       value={process.entryTime}
                       onChange={(e) =>
@@ -202,6 +213,7 @@ export function App() {
                   </td>
                   <td className="process-info">
                     <input
+                      disabled={runCpu}
                       type="number"
                       value={process.executionTime}
                       onChange={(e) =>
@@ -215,6 +227,7 @@ export function App() {
                   </td>
                   <td className="process-info">
                     <input
+                      disabled={runCpu}
                       type="number"
                       value={process.deadline}
                       onChange={(e) =>
@@ -228,6 +241,7 @@ export function App() {
                   </td>
                   <td className="process-info">
                     <input
+                      disabled={runCpu}
                       type="number"
                       value={process.pagesQuantity}
                       onChange={(e) =>

@@ -15,6 +15,7 @@ export function useCpu(
   clearCpu: () => void,
   runCpu: boolean,
   setRunCpu: (run: boolean) => void,
+  deletaProcesso: (processId: number) => void,
   editaProcesso: (processId: number, objectValue: any) => void,
   adicionaProcesso: () => void,
   ram: number[]
@@ -51,6 +52,9 @@ export function useCpu(
         pages: [],
       },
     ]);
+  }
+  function deletaProcesso(processId: number) {
+    setProcessList(processList.filter((p) => p.id !== processId));
   }
   function editaProcesso(processId: number, objectValue: any) {
     setProcessList(
@@ -253,6 +257,7 @@ export function useCpu(
     clearCpu,
     runCpu,
     setRunCpu,
+    deletaProcesso,
     editaProcesso,
     adicionaProcesso,
     ram,

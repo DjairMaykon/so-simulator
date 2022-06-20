@@ -7,6 +7,11 @@ table.table-process td {
 table.table-process td.process-info {
   @apply border-[1px] text-center w-[40px];
 }
+table.table-process td.process-info img {
+  height: 25px;
+  padding: 0 10px;
+}
+
 input[type="number"] {
   @apply appearance-none;
   -moz-appearance: textfield;
