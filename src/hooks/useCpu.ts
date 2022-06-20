@@ -178,6 +178,9 @@ export function useCpu(
     }
   }
 
+  function allFinish() {
+    return processList.every((p) => p.executedTimes == p.executionTime);
+  }
   function escalonarProcessos() {
     if (processQueue.length == 0) {
       setProcessRunning([
@@ -228,6 +231,7 @@ export function useCpu(
   }
 
   useEffect(() => {
+    if (allFinish()) setRunCpu(false);
     if (runCpu) {
       let interval = setInterval(async () => {
         // Adiciono na fila o processo
